@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include "Premier.c"
+// #include "Premier.c"
 
 /***compute median for goal points */
 float medianPoints(ug_premeir *median_points, int points_array){

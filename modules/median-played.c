@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include "Premier.c"
+
 
 float computeMedianPlayed(ug_premeir *median_played,int array){
      //for games played
@@ -18,9 +18,9 @@ float computeMedianPlayed(ug_premeir *median_played,int array){
             }
         }
         if (array % 2 == 0) {
-            return (median_var[(array / 2) - 1].played + median_var[(array / 2)].played) / 2;
+            return (median_played[(array / 2) - 1].played + median_played[(array / 2)].played) / 2;
         } else {
             /* code here */
-            return median_var[(array / 2)].played;
+            return median_played[(array / 2)].played;
         }
 }

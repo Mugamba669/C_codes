@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "Premier.c"
+// #include "Premier.c"
 
 
 /**Computing median for  games drawn***/

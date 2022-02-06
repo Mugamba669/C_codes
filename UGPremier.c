@@ -11,8 +11,7 @@
 /** median computations **/
 
 float median(ug_premeir *median_var, int size, int prop){
-        switch (prop)
-        {
+        switch (prop){
         case 1:
             return computeMedianPlayed(median_var,size); // computes the median for played games
             break;
@@ -29,7 +28,7 @@ float median(ug_premeir *median_var, int size, int prop){
             break;
         case 5:
             return medianPoints(median_var,size);/** Computes median for game points**/
-            break
+            break;
         }
 }
 
@@ -220,6 +219,7 @@ int main(void){
     printf("\n3:DISPLAY STANDARD DEVIATION");
     printf("\n4:DISPLAY COEFFICIENT OF VARIATION");
     printf("\n5:DISPLAY SORTED LIST AND RELEGATED TEAMS\n");
+    printf("\n6: Clear Screen\n");
 
     printf("\nEnter Choice:");
 
@@ -237,11 +237,11 @@ int main(void){
         break;
     case 2:
     puts("\t---------------------MEDIAN---------------------------------");
-    printf("The median for games played: %f\n", median(ug_premier_league, array_size_played, 1));
-    printf("The median for games won: %f\n", median(ug_premier_league, array_size_won, 2));
-    printf("The median for drawn: %f\n", median(ug_premier_league, array_size_drawn, 3));
-    printf("The median for goal difference: %f\n", median(ug_premier_league, array_size_difference, 4));
-    printf("The median for points: %f\n", median(ug_premier_league, array_size_points, 5));
+    printf("The median for games played: %f\n", median(ug_premier_league, array_played, 1));
+    printf("The median for games won: %f\n", median(ug_premier_league, array_won, 2));
+    printf("The median for drawn: %f\n", median(ug_premier_league, array_drawn, 3));
+    printf("The median for goal difference: %f\n", median(ug_premier_league, array_difference, 4));
+    printf("The median for points: %f\n", median(ug_premier_league, array_points, 5));
     puts("---------------------------End of median ------------------------");
 goto intro_screen;
         break;

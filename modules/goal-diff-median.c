@@ -1,5 +1,5 @@
 #include<stdio.h>
-#include "Premier.c"
+// #include "Premier.c"
 
 float getGoalDifferenceMedian(ug_premeir *differnce_median, int diff_array){
       int i, j;

@@ -1,4 +1,4 @@
-#include "Premier.c"
+// #include "Premier.c"
 /***Compute median for Games won *****/
 float computeWonGames(ug_premeir *won_median,int won_arr){
          int i, j;
