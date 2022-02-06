@@ -214,11 +214,11 @@ int main(void){
      sort(ug_premier_league);*/
     int choice;
  intro_screen:  printf("\n\t*************************Uganda Premier League *******************************\n");
-    printf("\n1:DISPLAY AVERAGE ");
-    printf("\n2:DISPLAY MEDIAN");
-    printf("\n3:DISPLAY STANDARD DEVIATION");
-    printf("\n4:DISPLAY COEFFICIENT OF VARIATION");
-    printf("\n5:DISPLAY SORTED LIST AND RELEGATED TEAMS\n");
+    printf("\n1:Display Average");
+    printf("\n2:Display Mdian");
+    printf("\n3:Display Standard Devitiation");
+    printf("\n4:Display Coefficient Of Variation");
+    printf("\n5:Display Sorted List And Related Teams\n");
     printf("\n6: Clear Screen\n");
 
     printf("\nEnter Choice:");
