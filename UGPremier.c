@@ -1,184 +1,38 @@
 #include <stdio.h>
 #include <math.h>
-//global structure
+#include "modules/Premier.c"
+#include "modules/median-drawn.c"
+#include "modules/median-played.c"
+#include "modules/median-points.c"
+#include "modules/median-won-games.c"
+#include "modules/goal-diff-median.c"
+#include "modules/Sort.c"
 
-typedef struct UGPremeir{
-    char *football_club;
-    int played;
-    int won;
-    int drawn;
-    int diff;
-    int points;
-    //int lost;
-} ug_premeir;
-//structure type
-ug_premeir ug_premier_league[16];
-ug_premeir temp_hold;
-//
-float median(ug_premeir *variable_median_structure, int size, int num){
-    if (num == 1){
+/** median computations **/
 
-        //for games played
-        int i, j;
-        for (i = 0; i < size - 1; i++){
-            /* code here */
-            for (j = i + 1; j < size; j++){
-                /* code here */
-                if (variable_median_structure[j].played < variable_median_structure[j-1].played){
-                    /* code here */
-                    int temp = variable_median_structure[j - 1].played;
-                    //printf("%d\n", temp);
-                    variable_median_structure[j-1].played = variable_median_structure[j].played;
-                    variable_median_structure[j].played = temp;
-                }
-            }
-        }
-        if (size % 2 == 0) {
-            return (variable_median_structure[(size / 2) - 1].played + variable_median_structure[(size / 2)].played) / 2;
-        } else {
-            /* code here */
-            return variable_median_structure[(size / 2)].played;
-        }
-    }else if (num == 2){
-        //games won
-        int i, j;
-        for (i = 0; i < size - 1; i++){
-            /* code here */
-            for (j = i + 1; j < size; j++){
-                /* code here */
-                if (variable_median_structure[j].won < variable_median_structure[j-1].won) {
-                    /* code here */
-                    int temp = variable_median_structure[j-1].won;
-                    //printf("%d\n", temp);
-                    variable_median_structure[j-1].won = variable_median_structure[j].won;
-                    variable_median_structure[j].won = temp;
-                }
-            }
-        }
-        if (size % 2 == 0){
-            return (variable_median_structure[(size / 2) - 1].won + variable_median_structure[(size / 2)].won) /2;
-        } else {
-            /* code here */
-            return variable_median_structure[(size / 2)].won;
-        }
-
-    } else if(num==3){
-                //games won
-        int i, j;
-        for (i = 0; i < size - 1; i++) {
-            /* code here */
-            for (j = i + 1; j < size; j++) {
-                /* code here */
-                if (variable_median_structure[j].drawn < variable_median_structure[j-1].drawn)
-                {
-                    /* code here */
-                    int temp = variable_median_structure[j-1].drawn;
-                    //printf("%d\n", temp);
-                    variable_median_structure[j-1].drawn = variable_median_structure[j].drawn;
-                    variable_median_structure[j].drawn = temp;
-                }
-            }
-        }
-        if (size % 2 == 0){
-            return (variable_median_structure[(size / 2) - 1].drawn +
-            variable_median_structure[(size / 2)].drawn) /2;
-        } else {
-            /* code here */
-            return variable_median_structure[(size / 2)].drawn;
-        }
-
-    } else if(num ==4){
-                //games won
-        int i, j;
-        for (i = 0; i < size - 1; i++){
-            /* code here */
-            for (j = i + 1; j < size; j++) {
-                /* code here */
-                if (variable_median_structure[j].diff < variable_median_structure[j-1].diff){
-                    /* code here */
-                    int temp = variable_median_structure[j-1].diff;
-                   
-                    variable_median_structure[j-1].diff = variable_median_structure[j].diff;
-                    variable_median_structure[j].diff = temp;
-                }
-            }
-        }
-        if (size % 2 == 0)
+float median(ug_premeir *median_var, int size, int prop){
+        switch (prop)
         {
-            return (variable_median_structure[(size / 2) - 1].diff +
-            variable_median_structure[(size / 2)].diff) /2;
-        } else {
-            /* code here */
-            return variable_median_structure[(size / 2)].diff;
-        }
+        case 1:
+            return computeMedianPlayed(median_var,size); // computes the median for played games
+            break;
 
-    } else{
-  //games won
-        int i, j;
-        for (i = 0; i < size - 1; i++)
-        {
-            /* code here */
-            for (j = i + 1; j < size; j++)
-            {
-                /* code here */
-                if (variable_median_structure[j].points < variable_median_structure[j-1].points)
-                {
-                    /* code here */
-                    int temp = variable_median_structure[j-1].points;
-                    //printf("%d\n", temp);
-                    variable_median_structure[j-1].points = variable_median_structure[j].points;
-                    variable_median_structure[j].points = temp;
-                }
-            }
+         case 2:
+            return computeWonGames(median_var,size);// computes the median for won goals
+            break;
+        
+        case 3:
+            return computeMedianForDrawn(median_var,size);// computes the median for drawn goals
+            break;
+        case 4:
+            return getGoalDifferenceMedian(median_var,size);// computes the median for goal difference
+            break;
+        case 5:
+            return medianPoints(median_var,size);/** Computes median for game points**/
+            break
         }
-        if (size % 2 == 0)
-        {
-            return (variable_median_structure[(size / 2) - 1].points +
-            variable_median_structure[(size / 2)].points) /2;
-        } else {
-            /* code here */
-            return variable_median_structure[(size / 2)].points;
-        }
-
-    }
 }
-//sort teams
-void sort(ug_premeir *variables_premeier_structure){
-    //sort using points
 
-    int i, j;
-    for (i = 0; i < 16; i++){
-        /* code here */
-        for (j = i + 1; j < 16; j++) {
-            /* code here */
-            if (variables_premeier_structure[j].points < variables_premeier_structure[j- 1].points){
-                /* code here */
-                temp_hold = variables_premeier_structure[j-1];
-                variables_premeier_structure[j-1] = variables_premeier_structure[j];
-                variables_premeier_structure[j] = temp_hold;
-            }
-        }
-    }
-
-    printf("\n%-30s %-5s %-5s %-5s %-5s %-5s\n", "TeamName", "MP", "W", "D", "GD", "Pts");
-
-    for (int i = 16; i > 0; i--){
-        printf("\n%-30s %-5d %-5d %-5d %-5d %-5d \n", variables_premeier_structure[i].football_club,
-               variables_premeier_structure[i].played, variables_premeier_structure[i].won,
-               variables_premeier_structure[i].drawn, variables_premeier_structure[i].diff,
-               variables_premeier_structure[i].points);
-    }
-
-    printf("\n\nThe Related teams are:\n");
-    printf("\n%-30s %-5s %-5s %-5s %-5s %-5s\n", "TeamName", "MP", "W", "D", "GD", "Pts");
-
-    for (int i = 2; i >= 0; i--){
-        printf("\n%-30s %-5d %-5d %-5d %-5d %-5d \n", variables_premeier_structure[i].football_club,
-               variables_premeier_structure[i].played, variables_premeier_structure[i].won,
-               variables_premeier_structure[i].drawn, variables_premeier_structure[i].diff,
-               variables_premeier_structure[i].points);
-    }
-}
 
 int main(void){
     /***Uganda priemer legue teams**/
@@ -258,11 +112,11 @@ int main(void){
     points_average = sum_points / 16.0;
 
     //  sizes
-    int array_size_played = 16;
-    int array_size_won = 16;
-    int array_size_drawn = 16;
-    int array_size_difference = 16;
-    int array_size_points = 16;
+    int array_played = 16;
+    int array_won = 16;
+    int array_drawn = 16;
+    int array_difference = 16;
+    int array_points = 16;
 
 
 
@@ -270,8 +124,7 @@ int main(void){
     int x, squareX, totalSquareX = 0;
     float variance, sd;
 
-    for (int i = 0; i < 16; i++)
-    {
+    for (int i = 0; i < 16; i++){
         x = ug_premier_league[i].played;
         squareX = x * x;
         totalSquareX += squareX;
@@ -291,8 +144,7 @@ int main(void){
     float sd__won;
     float total_square_won = 0.0;
 
-    for (m = 0; m <= 16; m++)
-    {
+    for (m = 0; m <= 16; m++){
         val = ug_premier_league[m].won;
         squareX_won = val * val;
         total_square_won += squareX_won;
@@ -305,8 +157,7 @@ int main(void){
     //drawn
     int D, squareX_drawn, totalSquareX_drawn = 0;
     float variance_drawn, sd_drawn;
-    for (int _m = 0; _m < 16; _m++)
-    {
+    for (int _m = 0; _m < 16; _m++) {
         D = ug_premier_league[_m].drawn;
         squareX_drawn = D * D;
         totalSquareX_drawn += squareX_drawn;
@@ -319,8 +170,7 @@ int main(void){
     //diff;
     int K, square_diff, totalsquare_diff = 0;
     float variance_diff, sd_diff;
-    for (int k = 0; k < 16; k++)
-    {
+    for (int k = 0; k < 16; k++) {
         K = ug_premier_league[k].diff;
         square_diff = K * K;
         totalsquare_diff += square_diff;
