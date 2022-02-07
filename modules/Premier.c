@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#define SIZE 16
 typedef struct UGPremeir{
     char *football_club;
     int played;
@@ -10,5 +10,5 @@ typedef struct UGPremeir{
     //int lost;
 } ug_premeir;
 
-ug_premeir ug_premier_league[16];
+ug_premeir ug_premier_league[SIZE];
 ug_premeir temp_hold;

@@ -7,6 +7,11 @@
 #include "modules/median-won-games.c"
 #include "modules/goal-diff-median.c"
 #include "modules/Sort.c"
+#include "modules/variance/drawn.c"
+#include "modules/variance/gamePoints.c"
+#include "modules/variance/gamesPlayed.c"
+#include "modules/variance/gameswon.c"
+#include "modules/variance/goalDiff.c"
 
 /** median computations **/
 
@@ -31,8 +36,74 @@ float median(ug_premeir *median_var, int size, int prop){
             break;
         }
 }
+/*******Method to compute the mean*********/
 
+float computeMean(int arr,ug_premeir *mean_values, int m){
+    switch (m){
+    case 1:
+         int sum = 0.0;
+            for (size_t i = 0; i < arr; i++){
+            sum += mean_values[i].played;
+            }
+            return (sum / arr);
+        break;
+    
+    case 2:
+         int won = 0.0;
+            for (size_t i = 0; i < arr; i++){
+            won += mean_values[i].won;
+            }
+            return (won / arr);
+        break;
+    case 3:
+         int dra = 0.0;
+            for (size_t i = 0; i < arr; i++){
+            dra += mean_values[i].drawn;
+            }
+            return (dra / arr);
+        break;
 
+    case 4:
+         int diff = 0.0;
+            for (size_t i = 0; i < arr; i++){
+            diff += mean_values[i].diff;
+            }
+            return (diff / arr);
+        break;
+    
+    case 5:
+         int pts = 0.0;
+            for (size_t i = 0; i < arr; i++){
+            pts += mean_values[i].points;
+            }
+            return (pts / arr);
+        break;
+    }
+}
+
+float computeVariance(int numsize ,ug_premeir *variance, float average ,int iter){
+        switch (iter){
+        case 1:
+           return computeVariancePlayed(numsize,variance,average);
+         break;
+
+         case 2:
+           return computeVarianceWon(numsize,variance,average);
+         break;
+
+         case 3:
+           return computeVarianceDrawn(numsize,variance,average);
+         break;
+
+         case 4:
+           return computeVarianceDiff(numsize,variance,average);
+         break;
+
+         case 5:
+           return computeVariancePoints(numsize,variance,average);
+         break;
+        }
+}
 int main(void){
     /***Uganda priemer legue teams**/
     char* team[16]  = {"VipersSC","Kcca FC","ScVilla","BusogaUnited","Ura Fc","Onduparaka FC","Bul Fc","Mbarara City","Express FC","Wakiso Giants FC","Kyetume FC","BrightStars FC","Police FC","Maroons FC","Proline","TororoUnited"};
@@ -55,144 +126,55 @@ int main(void){
 
     //calc average games drawn
 /************Average of games played **********************/
-    float played_average;
-    int sum_played = 0;
-    int p;
-    //loop structure
-    for (p = 0; p <= 16; p++){
-        sum_played += ug_premier_league[p].played;
-    }
-    played_average = sum_played/16.0;
+    float played_average = computeMean(SIZE,ug_premier_league,1);
 
-
-    //averag games won
-    float won_average;
-    int sum_won = 0;
-    int w;
-    //loop structure
-    for (w = 0; w < 16; w++){
-        sum_won += ug_premier_league[w].won;
-    }
-    won_average = sum_won / 16.0;
-    
+    //average games won
+    float won_average = computeMean(SIZE,ug_premier_league,2);
 
     //average game_drawn
 
-    float drawn_average;
-    int sum_drawn = 0;
-    int d;
-    //loop structure
-    for (d = 0; d < 16; d++){
-        sum_drawn += ug_premier_league[d].drawn;
-    }
-    drawn_average = sum_drawn / 16.0;
+    float drawn_average = computeMean(SIZE ,ug_premier_league,3);
 
     //average goal diff
-    float diff_average;
-    int sum_diff = 0;
-    int gd;
-    //loop structure
-    for (gd = 0; gd < 16; gd++)
-    {
-        sum_diff += ug_premier_league[gd].diff;
-    }
-    diff_average = sum_diff / 16.0;
-  
+    float diff_average = computeMean(SIZE,ug_premier_league,4);
 
     //points average
-    //average goal diff
-    float points_average;
-    int sum_points = 0;
-    int pa;
-    //loop structure
-    for (pa = 0; pa < 16; pa++){
-        sum_points += ug_premier_league[pa].points;
-    }
-    points_average = sum_points / 16.0;
-
-    //  sizes
-    int array_played = 16;
-    int array_won = 16;
-    int array_drawn = 16;
-    int array_difference = 16;
-    int array_points = 16;
+    float points_average = computeMean(SIZE,ug_premier_league,5);
 
 
-
-    //games played
-    int x, squareX, totalSquareX = 0;
-    float variance, sd;
-
-    for (int i = 0; i < 16; i++){
-        x = ug_premier_league[i].played;
-        squareX = x * x;
-        totalSquareX += squareX;
-    }
-    double totalAfterDivide = totalSquareX / 16.0;
-    variance = (totalAfterDivide) - (played_average * played_average);
+/***********************computing the variance of the different data********************/
+    // variance and standard deviation for games played
+    
+    float variance = computeVariance(SIZE ,ug_premier_league,played_average,1);
    /*****The standard deviation***/
-    sd = sqrt(variance);
-   
-
-    //won
-
-    int val;
-    int m;
-    int squareX_won;
-    float variance_won;
-    float sd__won;
-    float total_square_won = 0.0;
-
-    for (m = 0; m <= 16; m++){
-        val = ug_premier_league[m].won;
-        squareX_won = val * val;
-        total_square_won += squareX_won;
-    }
-    double divide_won = total_square_won / 16.0;
-    variance_won = divide_won - (won_average * won_average);
+   float sd = sqrt(variance);
+/*---------------------------------*/
+  
+  
+    // variance and standard deviation for  games won
+    float variance_won = computeVariance(SIZE ,ug_premier_league,won_average,2);
  /****The standard deviation for won ***/
-   sd__won = sqrt(variance_won);
+  float sd__won = sqrt(variance_won);
 
-    //drawn
-    int D, squareX_drawn, totalSquareX_drawn = 0;
-    float variance_drawn, sd_drawn;
-    for (int _m = 0; _m < 16; _m++) {
-        D = ug_premier_league[_m].drawn;
-        squareX_drawn = D * D;
-        totalSquareX_drawn += squareX_drawn;
-    }
-    double divide_drawn = totalSquareX_drawn / 16.0;
-    variance_drawn = divide_drawn - (drawn_average * drawn_average);
+
+/**************variance and standard deviation for games drwan****/
+    float variance_drawn = computeVariance(SIZE,ug_premier_league,drawn_average,3);
  /***The standard deviation for drawn**/
-    sd_drawn = sqrt(variance_drawn);
-   
-    //diff;
+   float sd_drawn = sqrt(variance_drawn);
+//-----------------------------------------------
+
+    //variance and standard deviation for goal difference;
     int K, square_diff, totalsquare_diff = 0;
-    float variance_diff, sd_diff;
-    for (int k = 0; k < 16; k++) {
-        K = ug_premier_league[k].diff;
-        square_diff = K * K;
-        totalsquare_diff += square_diff;
-    }
-    double divide_diff_total_square = totalsquare_diff / 16.0;
-    variance_diff = divide_diff_total_square - (diff_average * diff_average);
+    float variance_diff = computeVariance(SIZE,ug_premier_league,diff_average,4);
   /***The standard deviation for diff ***/
-    sd_diff = sqrt(variance_diff);
+   float sd_diff = sqrt(variance_diff);
 
-    //points
+    //variance and standard deviation for game points
+    float variance_points = computeVariance(SIZE,ug_premier_league,points_average,5);
+    // standard deviation
+    float sd_points = sqrt(variance_points);
+// ----------------------------------------------------
 
-    int P, square_points, totalsquare_points = 0;
-    float variance_points, sd_points;
-    for (int p = 0; p < 16; p++) {
-        P = ug_premier_league[p].points;
-        square_points = P * P;
-        totalsquare_points += square_points;
-    }
-
-
-    double divide_points_total_square = totalsquare_points / 16.0;
-    variance_points = divide_points_total_square - (points_average * points_average);
-    sd_points = sqrt(variance_points);
 
     /****Coeficient for games played **/
     float coff_played = (sd / played_average) * 100;
@@ -210,8 +192,6 @@ int main(void){
     /****coefficient of variation for team points***/
     float coff_points = (sd_points / points_average) * 100;
 
-    /*sorting teams by points
-     sort(ug_premier_league);*/
     int choice;
  intro_screen:  printf("\n\t*************************Uganda Premier League *******************************\n");
     printf("\n1:Display Average");
@@ -227,44 +207,44 @@ int main(void){
     switch (choice){
     case 1:
         puts("\n=========AVERAGES================================\n");
-        printf("Average for the goal points: %f\n", points_average);
-        printf("Average for games played: %f\n", played_average);
-        printf("Average for games drawn: %f\n", drawn_average);
-        printf("Average for  goal Difference: %f\n", diff_average);
-        printf("Average for games won: %f\n", won_average);
+        printf("Goal points: %f\n", points_average);
+        printf("Games played: %f\n", played_average);
+        printf("Games drawn: %f\n", drawn_average);
+        printf("Goal Difference: %f\n", diff_average);
+        printf("Games won: %f\n", won_average);
         goto intro_screen;
 
         break;
     case 2:
-    puts("\t---------------------MEDIAN---------------------------------");
-    printf("The median for games played: %f\n", median(ug_premier_league, array_played, 1));
-    printf("The median for games won: %f\n", median(ug_premier_league, array_won, 2));
-    printf("The median for drawn: %f\n", median(ug_premier_league, array_drawn, 3));
-    printf("The median for goal difference: %f\n", median(ug_premier_league, array_difference, 4));
-    printf("The median for points: %f\n", median(ug_premier_league, array_points, 5));
+    puts("\t---------------------MEDIAN VALUES---------------------------------");
+    printf("Games played: %f\n", median(ug_premier_league, SIZE, 1));
+    printf("Games won: %f\n", median(ug_premier_league, SIZE ,2));
+    printf("Games drawn: %f\n", median(ug_premier_league, SIZE, 3));
+    printf("Goal difference: %f\n", median(ug_premier_league, SIZE, 4));
+    printf("Game points: %f\n", median(ug_premier_league, SIZE, 5));
     puts("---------------------------End of median ------------------------");
 goto intro_screen;
         break;
     case 3:
         printf("\t============THE STANDARD DEVIATION==============\n");
-        printf("The standard deviation for played is : %f\n", sd);
-        printf("The standard deviation for won is : %f\n", sd__won);
-        printf("\nThe standard deviation for drawn is : %f\n", sd_drawn);
-        printf("\nThe standard deviation for diff is : %f\n", sd_diff);
-        printf("\nThe standard deviation for points is : %f\n", sd_points);
+        printf("Games played is : %f\n", sd);
+        printf("Games won is : %f\n", sd__won);
+        printf("\nGames drawn is : %f\n", sd_drawn);
+        printf("\nGoal difference is : %f\n", sd_diff);
+        printf("\nGame points is : %f\n", sd_points);
     puts("---------------------------End of standard deviation ------------------------");
 
 
         goto intro_screen;
         break;
     case 4:
-        printf("\n\t============COEFFICIENT OF VARRIATION==============\n");
+        printf("\n\t----------------COEFFICIENT OF VARRIATION--------------------\n");
 
-        printf("coefficient of variation for games played is : %.f\n", coff_played);
-        printf("coefficient of variation for games won is : %.f\n", coff_won);
-        printf("coefficient of variation for games drawn is :%.f\n", coff_drawn);
-        printf("coefficient of variation for goal diff is :  %.f\n", coff_diff);
-        printf("coefficient of variation for team points is:  %.f", coff_points);
+        printf("Games played is : %.f\n", coff_played);
+        printf("Games won is : %.f\n", coff_won);
+        printf("Games drawn is :%.f\n", coff_drawn);
+        printf("Goal difference is :  %.f\n", coff_diff);
+        printf("Geam points is:  %.f", coff_points);
     puts("---------------------------End of coefficient ------------------------");
 
         goto intro_screen;
@@ -274,6 +254,7 @@ goto intro_screen;
     case 5:
     /***** Sorting the different teams stored in the UGPremier**/
         sort(ug_premier_league);
+          goto intro_screen;
       break;
 
     case 6:
