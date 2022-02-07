@@ -42,39 +42,40 @@ float computeMean(int arr,ug_premeir *mean_values, int m){
     switch (m){
     case 1:
          int sum = 0.0;
-            for (size_t i = 0; i < arr; i++){
-            sum += mean_values[i].played;
+            for (int i = 0; i < arr; i++){
+            sum = sum + mean_values[i].played;
             }
             return (sum / arr);
         break;
     
     case 2:
          int won = 0.0;
-            for (size_t i = 0; i < arr; i++){
-            won += mean_values[i].won;
+            for (int i = 0; i < arr; i++){
+            won = won + mean_values[i].won;
             }
             return (won / arr);
         break;
     case 3:
-         int dra = 0.0;
-            for (size_t i = 0; i < arr; i++){
+         int dra = 0;
+            for (int i = 0; i < arr; i++){
             dra += mean_values[i].drawn;
             }
             return (dra / arr);
         break;
 
     case 4:
-         int diff = 0.0;
-            for (size_t i = 0; i < arr; i++){
-            diff += mean_values[i].diff;
+         int diff = 0;
+            for (int i = 0; i < arr; i++){
+            diff = diff + mean_values[i].diff;
             }
-            return (diff / arr);
+            // printf("the diff is %d",diff);
+            return diff;
         break;
     
     case 5:
          int pts = 0.0;
-            for (size_t i = 0; i < arr; i++){
-            pts += mean_values[i].points;
+            for (int i = 0; i < arr; i++){
+            pts = pts +mean_values[i].points;
             }
             return (pts / arr);
         break;
@@ -84,6 +85,7 @@ float computeMean(int arr,ug_premeir *mean_values, int m){
 float computeVariance(int numsize ,ug_premeir *variance, float average ,int iter){
         switch (iter){
         case 1:
+        printf("played");
            return computeVariancePlayed(numsize,variance,average);
          break;
 
@@ -109,9 +111,13 @@ int main(void){
     char* team[16]  = {"VipersSC","Kcca FC","ScVilla","BusogaUnited","Ura Fc","Onduparaka FC","Bul Fc","Mbarara City","Express FC","Wakiso Giants FC","Kyetume FC","BrightStars FC","Police FC","Maroons FC","Proline","TororoUnited"};
   /***Team points****/
     int points[16] = {54,50,46,42,40,36,36,31,31,30,30,29,25,24,22,22};
+
     int won_games[16]= {16,15,13,13,10,10,10,9,9,8,9,7,8,6,8,6};
+
     int drawn_game[16] = {6,5,7,3,10,6,6,4,4,6,3,8,4,6,4,4};
+
     int play = 25;
+
     int goals_dif[16]= {23,21,12,8,7,6,2,2,-7,-3,-13,-4,-4,-15,-14,-21};
 
     for (size_t i = 0; i < 16; i++){
@@ -126,53 +132,54 @@ int main(void){
 
     //calc average games drawn
 /************Average of games played **********************/
-    float played_average = computeMean(SIZE,ug_premier_league,1);
-
+    float played_average = computeMean(16,ug_premier_league,1);
+    
     //average games won
-    float won_average = computeMean(SIZE,ug_premier_league,2);
-
+    float won_average = computeMean(16,ug_premier_league,2);
+printf("The avearage won %f\n",won_average);
     //average game_drawn
 
-    float drawn_average = computeMean(SIZE ,ug_premier_league,3);
+    float drawn_average = computeMean(16 ,ug_premier_league,3);
 
     //average goal diff
-    float diff_average = computeMean(SIZE,ug_premier_league,4);
+    float diff_average = computeMean(16,ug_premier_league,4);
 
     //points average
-    float points_average = computeMean(SIZE,ug_premier_league,5);
+    float points_average = computeMean(16,ug_premier_league,5);
 
 
 /***********************computing the variance of the different data********************/
     // variance and standard deviation for games played
     
-    float variance = computeVariance(SIZE ,ug_premier_league,played_average,1);
+    float variance = computeVariance(16 ,ug_premier_league,played_average,1);
+    printf("%f\n",variance);
    /*****The standard deviation***/
    float sd = sqrt(variance);
 /*---------------------------------*/
   
   
     // variance and standard deviation for  games won
-    float variance_won = computeVariance(SIZE ,ug_premier_league,won_average,2);
+    float variance_won = computeVariance(16,ug_premier_league,won_average,2);
  /****The standard deviation for won ***/
   float sd__won = sqrt(variance_won);
 
-
 /**************variance and standard deviation for games drwan****/
-    float variance_drawn = computeVariance(SIZE,ug_premier_league,drawn_average,3);
+    float variance_drawn = computeVariance(16,ug_premier_league,drawn_average,3);
  /***The standard deviation for drawn**/
    float sd_drawn = sqrt(variance_drawn);
 //-----------------------------------------------
 
     //variance and standard deviation for goal difference;
     int K, square_diff, totalsquare_diff = 0;
-    float variance_diff = computeVariance(SIZE,ug_premier_league,diff_average,4);
+    float variance_diff = computeVariance(16,ug_premier_league,diff_average,4);
   /***The standard deviation for diff ***/
    float sd_diff = sqrt(variance_diff);
 
     //variance and standard deviation for game points
-    float variance_points = computeVariance(SIZE,ug_premier_league,points_average,5);
+    float variance_points = computeVariance(16,ug_premier_league,points_average,5);
     // standard deviation
     float sd_points = sqrt(variance_points);
+    printf("%f,%f,%f,%f",variance,variance_diff,variance_drawn,variance_points);
 // ----------------------------------------------------
 
 
@@ -195,10 +202,10 @@ int main(void){
     int choice;
  intro_screen:  printf("\n\t*************************Uganda Premier League *******************************\n");
     printf("\n1:Display Average");
-    printf("\n2:Display Mdian");
+    printf("\n2:Display Median");
     printf("\n3:Display Standard Devitiation");
     printf("\n4:Display Coefficient Of Variation");
-    printf("\n5:Display Sorted List And Related Teams\n");
+    printf("\n5:Display Sorted List And Related Teams");
     printf("\n6: Clear Screen\n");
 
     printf("\nEnter Choice:");
@@ -242,7 +249,7 @@ goto intro_screen;
 
         printf("Games played is : %.f\n", coff_played);
         printf("Games won is : %.f\n", coff_won);
-        printf("Games drawn is :%.f\n", coff_drawn);
+        printf("Games drawn is : %.f\n", coff_drawn);
         printf("Goal difference is :  %.f\n", coff_diff);
         printf("Geam points is:  %.f", coff_points);
     puts("---------------------------End of coefficient ------------------------");

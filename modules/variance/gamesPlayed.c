@@ -5,9 +5,8 @@ float computeVariancePlayed(int numsize ,ug_premeir *played_var, float average){
     float variance;
 
     for (int i = 0; i < numsize; i++){
-        x = played_var[i].drawn;
-        squareX = x * x;
-        totalSquareX += squareX;
+        x = i;
+        totalSquareX += (played_var[x].drawn*played_var[x].drawn);
     }
     float meanSq = (float)totalSquareX / 16.0;
 

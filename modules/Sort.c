@@ -11,7 +11,7 @@ void sort(ug_premeir *ug_premier_sort){
         /* code here */
         for (j = 0; j < (16 - i - 1); j++) {
             /* code here */
-            if (ug_premier_sort[j].points > ug_premier_sort[j+ 1].points){
+            if (ug_premier_sort[j].points < ug_premier_sort[j+ 1].points){
                 /* code here */
                 temp_hold = ug_premier_sort[j+1];
                 ug_premier_sort[j+1] = ug_premier_sort[j];

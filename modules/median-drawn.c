@@ -19,9 +19,10 @@ float computeMedianForDrawn(ug_premeir *drawn_median ,int drawn_array){
                 }
             }
         }
+
+
         if (drawn_array % 2 == 0){
-            return (drawn_median[(drawn_array / 2) - 1].drawn +
-            drawn_median[(drawn_array / 2)].drawn) /2;
+            return (drawn_median[(drawn_array / 2) - 1].drawn + drawn_median[(drawn_array / 2)].drawn) / 2;
         } else {
             /* code here */
             return drawn_median[(drawn_array / 2)].drawn;
